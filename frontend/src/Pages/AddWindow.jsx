@@ -2,17 +2,11 @@ import { useState } from 'react'
 import CloseBtn from '../components/CloseBtn'
 import axios from 'axios'
 
-export default function AddWindow({ closeWindow, setItems }){
+export default function AddWindow({ closeWindow, refreshItems }){
     const [name, setName] = useState('');
     const [quantity, setQuantity] = useState(0);
     const handleClose = (value) => {
         closeWindow(value)
-    }
-
-    const fetchItems = () => {
-        axios.get('http://localhost:5000/displayItems').then(res => {
-                setItems(res.data.data);
-            });
     }
 
     const addItem = async (e) => {
@@ -21,7 +15,8 @@ export default function AddWindow({ closeWindow, setItems }){
             const newItem = {name, quantity}
 
             await axios.post('http://localhost:5000/addItem', newItem);
-            fetchItems();
+            refreshItems(); //refresh items
+            closeWindow(false);
         }catch(err){
             console.log(err);
             alert('Add item failed');

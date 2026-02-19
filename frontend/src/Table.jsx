@@ -1,13 +1,8 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-export default function Table({fetchItems}){
-    const [items, setItems] = useState([]);
-
-    useEffect(() => {
-        setItems(fetchItems)
-    }, []);
-
+export default function Table({ items }){
+    
     const itemList = items.map(item => {
         return(
             <tr key={item.id}>

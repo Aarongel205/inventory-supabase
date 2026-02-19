@@ -1,13 +1,24 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Table from './Table.jsx'
 import AddBtn from './components/addBtn.jsx'
 import AddWindow from './Pages/AddWindow.jsx'
 import EditWindow from './Pages/EditWindow.jsx'
+import axios from 'axios'
 
 export default function Inventory(){
     const [isAddWindow, setIsAddWindow] = useState(false);
     const [isEditWindow, setIsEditWindow] = useState(false);
-    const [fetchedItems, setFetchedItems] = useState([]);
+    const [item, setItems] = useState([]);
+
+    const fetchItems = () =>{
+        axios.get('http://localhost:5000/displayItems').then(res => {
+            setItems(res.data.data);
+        })
+    }
+
+    useEffect(() => {
+        fetchItems(); // refresh pages
+    }, [])
 
     //handle add window
     const handleAdd = (value) => {
@@ -27,11 +38,6 @@ export default function Inventory(){
         setIsEditWindow(value);
     }
 
-    //handle items
-    const handleItems = (value) => {
-        setFetchedItems(value)
-    }
-
     const mainDiv = {
         width: '100%', 
         height: '100vh',  
@@ -44,8 +50,8 @@ export default function Inventory(){
         <>
             <div style={mainDiv}>
                 <AddBtn setAdd={handleAdd}/>
-                <Table fetchItems={fetchedItems}/>
-                {isAddWindow && <AddWindow closeWindow={handleCloseAdd} setItems={handleItems}/>}
+                <Table items={item}/>
+                {isAddWindow && <AddWindow closeWindow={handleCloseAdd} refreshItems={fetchItems}/>}
                 {isEditWindow && <EditWindow closeWindow={handleCloseEdit}/>}
             </div> 
         </>
