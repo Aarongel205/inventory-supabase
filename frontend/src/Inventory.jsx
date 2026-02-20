@@ -50,7 +50,7 @@ export default function Inventory(){
         <>
             <div style={mainDiv}>
                 <AddBtn setAdd={handleAdd}/>
-                <Table items={item}/>
+                <Table items={item} refreshItems={fetchItems}/>
                 {isAddWindow && <AddWindow closeWindow={handleCloseAdd} refreshItems={fetchItems}/>}
                 {isEditWindow && <EditWindow closeWindow={handleCloseEdit}/>}
             </div> 
