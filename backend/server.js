@@ -36,12 +36,28 @@ app.post('/addItem', async (req, res) => {
             res.status(400).json({message: message.error})
         }
 
-        res.json({message: 'Item added successfully'})
+        res.json({message: 'Item added successfully', data})
     }catch(err){
         console.log(err);
         res.status(500).json({message: 'Server error'});
     }
 });
+
+//DELETE
+app.delete('/deleteItem/:id', async (req, res) => {
+    try{
+        const { id } = req.params;
+
+        const { data: deletedItems, error} = await supabase.from('items').delete().eq('id', id);
+
+        if(error) return res.status(400).json({message: 'items not found'});
+
+        res.json(deletedItems)
+    }catch(err){
+        console.log(err);
+    }
+});
+
 app.listen(process.env.PORT, () => {
     console.log(`Server running at port ${process.env.PORT}`);
 });

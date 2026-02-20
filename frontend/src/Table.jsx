@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import DeleteBtn from './components/deleteBtn'
 
 export default function Table({ items }){
     
@@ -8,7 +9,9 @@ export default function Table({ items }){
             <tr key={item.id}>
                 <td>{item.name}</td>
                 <td>{item.quantity}</td>
-                <td>{item.created_at}</td>
+                <td>{item.created_at.slice(0, 10)}</td>
+                <td><DeleteBtn itemId={item.id}/></td>
+                <td><button>update</button></td>
             </tr>
         )
     })
